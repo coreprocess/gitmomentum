@@ -116,6 +116,8 @@ gitmomentum/
 
 Pushes to `production` trigger a Vercel deployment to gitmomentum.com. Production deployments do not require approval.
 
+The Vercel project must have `VERCEL_DEEP_CLONE=true` set; otherwise Vercel's shallow clone hides older tags and the changelog's version column renders every commit as `untagged`.
+
 ---
 
 ## Feature flags

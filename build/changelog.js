@@ -64,7 +64,15 @@ export function buildChangelog() {
 
   mkdirSync(DIST, { recursive: true });
   writeFileSync(resolve(DIST, "changelog.html"), html);
-  console.log(`✓ dist/changelog.html (${commits.length} commits)`);
+
+  // Log tagged-commit count so a regression in the deployment env's git
+  // history (e.g. Vercel reverting from deep to shallow clones) surfaces
+  // as "0 tagged" in the build output instead of silently shipping a
+  // changelog where every commit reads "untagged".
+  const tagged = commits.filter((c) => c.isExactTag).length;
+  console.log(
+    `✓ dist/changelog.html (${commits.length} commits, ${tagged} tagged)`,
+  );
 }
 
 function readCommits() {
