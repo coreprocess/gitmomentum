@@ -36,12 +36,20 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
+  /* Hoist the grid to the list so every row shares the same column tracks
+     via subgrid — otherwise each <li> auto-sizes independently and the
+     version/type columns jag around between long describe strings (e.g.
+     `v0.1.0-2-gb4cb84b`) and short tagged versions (e.g. `v1.0.0`). */
+  display: grid;
+  grid-template-columns: auto auto auto 1fr auto;
+  column-gap: 0.875rem;
 }
 
 .commit {
   display: grid;
-  grid-template-columns: auto auto auto 1fr auto;
-  gap: 0.875rem;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
   align-items: baseline;
   padding: 0.625rem 0;
   border-top: 1px solid var(--rule);
@@ -74,21 +82,42 @@
 
 /* version */
 
+/* The cell is the actual grid item in the subgrid; it lays out the chip
+   and (for tagged commits) a horizontal leader line that fills the empty
+   space between the short tagged chip and the next column. */
+.commit__version-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.commit__version-cell--leader::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 1px dashed var(--rule);
+}
+
 .commit__version {
   color: var(--fg-mute);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  flex-shrink: 0;
+
+  padding: 0.05em 0.45em;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--bg-elev);
 }
 
 .commit__version--tag {
   color: var(--accent);
   font-weight: 700;
-  background: rgba(247, 129, 102, 0.12);
-  padding: 0.05em 0.45em;
-  border-radius: 3px;
-  border: 1px solid rgba(247, 129, 102, 0.35);
   font-size: 0.8125rem;
+  background: rgba(247, 129, 102, 0.12);
+  border-color: rgba(247, 129, 102, 0.35);
 }
 
 .commit__version--none {
@@ -138,7 +167,14 @@
 /* ---------- responsive ---------- */
 
 @media (max-width: 720px) {
+  /* Drop the outer subgrid: on mobile each row becomes its own 2D grid
+     with a different column count and named areas. */
+  .commits {
+    display: block;
+  }
+
   .commit {
+    grid-column: auto;
     grid-template-columns: auto auto 1fr;
     grid-template-areas:
       "sha     version date"
@@ -148,11 +184,16 @@
     padding: 0.75rem 0;
   }
 
-  .commit__sha     { grid-area: sha; }
-  .commit__version { grid-area: version; justify-self: start; }
-  .commit__date    { grid-area: date; justify-self: end; }
-  .commit__type    { grid-area: type; justify-self: start; }
-  .commit__summary { grid-area: summary; }
+  .commit__sha          { grid-area: sha; }
+  .commit__version-cell { grid-area: version; justify-self: start; }
+  .commit__date         { grid-area: date; justify-self: end; }
+  .commit__type         { grid-area: type; justify-self: start; }
+  .commit__summary      { grid-area: summary; }
+
+  /* No empty space to fill on mobile — the cell is shrunk to content. */
+  .commit__version-cell--leader::after {
+    display: none;
+  }
 }
 
 /* ---------- footer alignment ---------- */

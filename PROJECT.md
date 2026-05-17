@@ -71,8 +71,10 @@ Pattern: `v<major>.<minor>.<patch>` (matched by `v[0-9]*`).
 Tags are created manually by the maintainer on release-worthy commits. The version of any commit is derived with:
 
 ```
-git describe --tags --candidates=100 --match='v[0-9]*'
+git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4
 ```
+
+`--abbrev=4` shortens the `-g<sha>` suffix on non-tagged commits (e.g. `v0.1.0-3-gabcd` instead of `v0.1.0-3-gabcd123`), keeping the changelog's version column tidy without losing information.
 
 ---
 

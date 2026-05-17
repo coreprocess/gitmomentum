@@ -3,11 +3,13 @@
  *
  * Each commit on whatever HEAD is currently checked out becomes one row.
  * The version column is `git describe --tags --candidates=100
- * --match='v[0-9]*' <sha>`, per the convention defined in PROJECT.md, so
- * tagged commits show their tag and every other commit shows its
- * relationship to the closest tag (e.g. `v0.1.0-3-gabcd123`). Tagged
- * commits also get an HTML anchor (`#v1-2-3`) so releases can be linked
- * to directly.
+ * --match='v[0-9]*' --abbrev=4 <sha>`, per the convention defined in
+ * PROJECT.md, so tagged commits show their tag and every other commit
+ * shows its relationship to the closest tag (e.g. `v0.1.0-3-gabcd`). The
+ * 4-char abbreviation keeps the column narrow enough to avoid jagging
+ * against short tagged versions while staying unambiguous within the
+ * project's commit count. Tagged commits also get an HTML anchor
+ * (`#v1-2-3`) so releases can be linked to directly.
  */
 
 import { execFileSync } from "node:child_process";
@@ -97,6 +99,7 @@ function readCommits() {
         "--tags",
         "--candidates=100",
         `--match=${TAG_GLOB}`,
+        "--abbrev=4",
         sha,
       );
 
@@ -132,9 +135,20 @@ function render(commits) {
       const typeClass = c.type ? `commit__type--${c.type}` : "commit__type--other";
       const typeLabel = c.type ?? "other";
 
-      const versionCell = c.version
-        ? `<span class="commit__version${c.isExactTag ? " commit__version--tag" : ""}">${escape(c.version)}</span>`
-        : `<span class="commit__version commit__version--none">untagged</span>`;
+      // The version chip lives inside a flex cell so we can paint a leader
+      // line into the empty space after short tagged chips (e.g. `v1.0.0`)
+      // without disturbing the long describe strings, which already fill the
+      // subgrid column on their own.
+      const chipText = c.version ?? "untagged";
+      let chipClass = "commit__version";
+      if (c.isExactTag) chipClass += " commit__version--tag";
+      else if (!c.version) chipClass += " commit__version--none";
+
+      const cellClass = c.isExactTag
+        ? "commit__version-cell commit__version-cell--leader"
+        : "commit__version-cell";
+
+      const versionCell = `<span class="${cellClass}"><span class="${chipClass}">${escape(chipText)}</span></span>`;
 
       return `<li class="commit${taggedClass}"${id}>
   <a class="commit__sha" href="${REPO_URL}/commit/${c.sha}" rel="noopener" target="_blank" aria-label="View commit ${escape(c.short)} on GitHub"><code>${escape(c.short)}</code></a>

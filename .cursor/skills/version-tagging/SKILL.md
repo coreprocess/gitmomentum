@@ -5,7 +5,7 @@ description: Cuts a new `v<major>.<minor>.<patch>` tag on the gitmomentum reposi
 
 # Version Tagging
 
-This project's version-tag rules are defined in `PROJECT.md` → "Names" and "Conventions → Version tags". Tags are the source of truth for versions: `git describe --tags --candidates=100 --match='v[0-9]*'` derives the version of any commit, and `dist/changelog.html` is generated from those tags (see `build/changelog.js`).
+This project's version-tag rules are defined in `PROJECT.md` → "Names" and "Conventions → Version tags". Tags are the source of truth for versions: `git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4` derives the version of any commit, and `dist/changelog.html` is generated from those tags (see `build/changelog.js`).
 
 ## Format
 
@@ -96,8 +96,8 @@ Once `v1.0.0` exists, use the standard table above without adjustment.
 8. Verify with `git describe`:
 
    ```bash
-   git describe --tags --candidates=100 --match='v[0-9]*' "$COMMIT"
-   # expected: vX.Y.Z
+   git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4 "$COMMIT"
+   # expected: vX.Y.Z (no -N-g<sha> suffix means the commit is exactly tagged)
    ```
 
 9. Do **not** push automatically. Show the maintainer the command instead:
