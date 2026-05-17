@@ -1,0 +1,386 @@
+/* ====================================================================
+   SPEC PAGE
+   ==================================================================== */
+
+.spec-wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+.spec-content {
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  padding-bottom: clamp(3rem, 6vw, 4rem);
+}
+
+.spec-content > .section-prompt {
+  margin-bottom: 1.5rem;
+}
+
+.spec-content > h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+}
+
+/* ---------- spec: table of contents ---------- */
+
+.toc {
+  background: var(--bg-elev);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0 3rem;
+}
+
+.toc > .section-prompt {
+  margin-bottom: 1rem;
+}
+
+.toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .toc__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.toc__list li {
+  margin: 0;
+}
+
+.toc__list a {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  color: var(--fg);
+  border-bottom: none;
+  align-items: baseline;
+}
+
+.toc__list a:hover,
+.toc__list a:focus-visible {
+  color: var(--accent);
+}
+
+.toc__list a:hover .toc__num,
+.toc__list a:focus-visible .toc__num {
+  color: var(--accent);
+}
+
+.toc__num {
+  color: var(--fg-mute);
+  font-weight: 700;
+  font-feature-settings: "tnum";
+  transition: color 0.15s ease;
+}
+
+.toc__title {
+  color: inherit;
+}
+
+/* ---------- spec: article typography ---------- */
+
+.spec-content article {
+  font-size: 0.9375rem;
+}
+
+.spec-content article h2 {
+  margin: 3rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  letter-spacing: -0.01em;
+  scroll-margin-top: 5rem;
+}
+
+.spec-content article h2:first-child {
+  margin-top: 1rem;
+}
+
+.spec-content article h3 {
+  margin: 2.25rem 0 0.75rem;
+  font-size: 1.0625rem;
+  color: var(--fg);
+  scroll-margin-top: 5rem;
+}
+
+.spec-content article p {
+  margin: 0 0 1rem;
+  line-height: 1.7;
+}
+
+.spec-content article ol,
+.spec-content article ul {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.spec-content article li {
+  margin: 0.25rem 0;
+  line-height: 1.65;
+}
+
+.spec-content article ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.spec-content article ul > li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.spec-content article ul > li::before {
+  content: "─";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.spec-content article ul ul {
+  margin-top: 0.25rem;
+}
+
+.spec-content article ul ul > li::before {
+  content: "·";
+  color: var(--fg-mute);
+  top: -0.05em;
+}
+
+.spec-content article ol {
+  list-style: decimal;
+  padding-left: 2rem;
+}
+
+.spec-content article ol li::marker {
+  color: var(--fg-mute);
+  font-weight: 700;
+}
+
+.spec-content article code {
+  color: var(--accent);
+  background: var(--bg-elev);
+  border: 1px solid var(--rule);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.spec-content article pre.terminal {
+  background: var(--bg-elev);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.875rem 1rem;
+  margin: 1rem 0 1.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.spec-content article pre.terminal code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--fg);
+  font-size: inherit;
+}
+
+.spec-content article strong {
+  color: var(--fg);
+  font-weight: 700;
+}
+
+.spec-content article em {
+  color: var(--fg);
+  font-style: italic;
+}
+
+.spec-content article hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 3rem 0;
+}
+
+.spec-content article blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--fg-dim);
+}
+
+.spec-content article a {
+  color: var(--accent);
+}
+
+/* ---------- spec: heading anchor ---------- */
+
+.spec-content article h2,
+.spec-content article h3 {
+  position: relative;
+}
+
+.h-anchor {
+  margin-left: 0.5rem;
+  color: var(--fg-mute);
+  opacity: 0;
+  text-decoration: none;
+  font-weight: 400;
+  border-bottom: none !important;
+  transition: opacity 0.15s ease, color 0.15s ease;
+  font-size: 0.9em;
+}
+
+.spec-content article h2:hover .h-anchor,
+.spec-content article h3:hover .h-anchor,
+.h-anchor:focus-visible {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.h-anchor:hover {
+  color: var(--accent) !important;
+}
+
+/* ---------- spec: tables ---------- */
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--bg-elev);
+}
+
+.spec-content article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.spec-content article thead th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  color: var(--fg-dim);
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  white-space: nowrap;
+}
+
+.spec-content article tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.spec-content article tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.spec-content article tbody td:first-child {
+  white-space: nowrap;
+}
+
+.spec-content article tbody td code,
+.spec-content article tbody td strong {
+  white-space: normal;
+}
+
+@media (max-width: 640px) {
+  .spec-content article tbody td:first-child {
+    white-space: normal;
+  }
+}
+
+/* ---------- spec footer adjustment ---------- */
+
+.footer.spec-wrap {
+  border-top: 1px solid var(--rule);
+  margin-top: 2rem;
+}
+
+/* ====================================================================
+   PRINT STYLESHEET
+   ==================================================================== */
+
+@media print {
+  :root {
+    --bg: #ffffff;
+    --bg-elev: #f5f5f0;
+    --fg: #1a1a1a;
+    --fg-dim: #4a4a4a;
+    --fg-mute: #7a7a7a;
+    --accent: #b8460e;
+    --add: #1a7f37;
+    --rule: #d8d8d4;
+  }
+
+  body {
+    background: #ffffff;
+    color: #1a1a1a;
+    font-size: 10pt;
+    line-height: 1.5;
+  }
+
+  .nav,
+  .h-anchor,
+  .toc {
+    display: none !important;
+  }
+
+  .spec-wrap {
+    max-width: none;
+    padding: 0;
+  }
+
+  .spec-content {
+    padding-top: 0;
+  }
+
+  .spec-content article h2 {
+    page-break-after: avoid;
+    margin-top: 1.5rem;
+  }
+
+  .spec-content article h3 {
+    page-break-after: avoid;
+  }
+
+  .spec-content article p,
+  .spec-content article li,
+  .spec-content article tr {
+    page-break-inside: avoid;
+  }
+
+  .spec-content article pre.terminal,
+  .spec-content article code,
+  .table-wrap {
+    border-color: #c0c0c0;
+    background: #f5f5f0;
+  }
+
+  .spec-content article a {
+    color: #1a1a1a;
+    text-decoration: underline;
+  }
+
+  .footer {
+    border-top: 1px solid #c0c0c0;
+    color: #4a4a4a;
+  }
+
+  @page {
+    margin: 2cm;
+  }
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Source for dist/og-image.png (1200x630 social preview).
+
+  Rendered at build time by build/assets.js using @resvg/resvg-js, with the
+  JetBrains Mono fonts loaded from src/fonts/. This file is excluded from the
+  deployed dist/ (see EXCLUDE_SUFFIXES in build/main.js)  it is a build
+  input, not a servable asset.
+
+  Preview during design iteration: open this SVG directly in a browser. The
+  @font-face URLs below resolve relative to src/, so the live preview uses
+  the same JetBrains Mono as the rendered PNG.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-style: normal;
+        font-weight: 400;
+        src: url("fonts/JetBrainsMono-Regular.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        font-style: normal;
+        font-weight: 700;
+        src: url("fonts/JetBrainsMono-Bold.woff2") format("woff2");
+      }
+      text { font-family: "JetBrains Mono", monospace; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0d1117"/>
+
+  <text x="100" y="110" font-size="22" font-weight="400"
+   ><tspan fill="#f78166">~/gitmomentum</tspan
+   ><tspan fill="#8b949e"> (</tspan
+   ><tspan fill="#3fb950">main</tspan
+   ><tspan fill="#8b949e">) </tspan
+   ><tspan fill="#6e7681">$</tspan
+   ><tspan fill="#8b949e"> cat README.md</tspan
+  ></text>
+
+  <text x="100" y="265" font-size="112" font-weight="700" fill="#e6edf3"
+        letter-spacing="-2.24"># Git Momentum</text>
+
+  <text x="100" y="345" font-size="40" font-weight="700"
+   ><tspan fill="#f78166">&gt;</tspan
+   ><tspan fill="#e6edf3" dx="14">A Git workflow that keeps teams moving.</tspan
+  ></text>
+
+  <text x="100" y="400" font-size="24" font-weight="400" fill="#e6edf3">
+    <tspan x="100">Lightweight yet precise. Few rules, low overhead &#8212; with controlled</tspan>
+    <tspan x="100" dy="36">releases, hotfixes, and auditable history built in.</tspan>
+  </text>
+
+  <line x1="100" y1="538" x2="1100" y2="538" stroke="#21262d" stroke-width="1"/>
+
+  <text x="100" y="585" font-size="22" font-weight="400"
+   ><tspan fill="#6e7681">$</tspan
+   ><tspan fill="#f78166" font-weight="700" dx="14">gitmomentum.com</tspan
+   ><tspan fill="#6e7681" dx="14">&#183;</tspan
+   ><tspan fill="#8b949e" dx="14">open specification</tspan
+  ></text>
+</svg>

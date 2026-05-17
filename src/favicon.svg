@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Single source of truth for every favicon variant. Modern browsers (~96%
+  support) consume this SVG directly. The following raster variants are
+  generated at build time by build/assets.js and emitted straight into dist/
+  (they are NOT committed):
+    favicon.ico         (16/32/48 multi-res, rounded — legacy fallback)
+    apple-touch-icon.png (180x180, square — iOS adds its own rounding)
+    icon-192.png         (192x192, square — Android / PWA manifest)
+    icon-512.png         (512x512, square — Android / PWA manifest)
+  The square variants are produced by swapping rx="6" → rx="0" before
+  rasterizing, so iOS / Android can apply their own corner mask cleanly.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" ry="6" fill="#0d1117"/>
+  <path d="M 5 13.5 L 18 13.5 L 18 7 L 27 16 L 18 25 L 18 18.5 L 5 18.5 Z"
+        fill="#f78166"
+        stroke="#f78166"
+        stroke-width="1.5"
+        stroke-linejoin="round"/>
+</svg>

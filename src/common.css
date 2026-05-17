@@ -1,0 +1,299 @@
+/* ---------- fonts ---------- */
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/JetBrainsMono-Bold.woff2") format("woff2");
+}
+
+/* ---------- tokens ---------- */
+
+:root {
+  --bg: #0d1117;
+  --bg-elev: #161b22;
+  --fg: #e6edf3;
+  --fg-dim: #8b949e;
+  --fg-mute: #6e7681;
+  --accent: #f78166;
+  --accent-dim: #d2674f;
+  --rule: #21262d;
+  --add: #3fb950;
+  --selection: rgba(247, 129, 102, 0.25);
+
+  --col: 720px;
+  --pad-x: clamp(1.25rem, 4vw, 2rem);
+  --section-y: clamp(3rem, 8vw, 5rem);
+
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ---------- reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 4rem;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--fg);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+a:hover,
+a:focus-visible {
+  border-bottom-color: var(--accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0 0 1rem 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  color: var(--fg);
+}
+
+h3 {
+  font-size: 1.0625rem;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- layout ---------- */
+
+.wrap {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+main > section {
+  padding: var(--section-y) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+main > section:last-of-type {
+  border-bottom: none;
+}
+
+/* ---------- nav ---------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.nav__inner {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0.75rem var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: var(--fg-dim);
+}
+
+.nav__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav__title::before {
+  content: "$ ";
+  color: var(--fg-mute);
+}
+
+.nav__links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav__links a {
+  color: var(--fg-dim);
+  border-bottom: none;
+}
+
+.nav__links a:hover,
+.nav__links a:focus-visible {
+  color: var(--accent);
+}
+
+.nav__links a[aria-current="page"] {
+  color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .nav__title {
+    display: none;
+  }
+
+  .nav__inner {
+    justify-content: center;
+  }
+
+  .nav__links {
+    justify-content: center;
+    gap: 0.875rem;
+  }
+}
+
+/* ---------- section heading shared ---------- */
+
+.section-prompt {
+  color: var(--fg-dim);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.section-prompt .sigil {
+  color: var(--fg-mute);
+}
+
+.section-prompt .comment {
+  color: var(--fg-mute);
+}
+
+/* ---------- terminal panel (shared) ---------- */
+
+.terminal {
+  background: var(--bg-elev);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.875rem 1rem;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--fg);
+}
+
+.terminal .prompt {
+  color: var(--accent);
+  user-select: none;
+}
+
+.terminal .comment {
+  color: var(--fg-mute);
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  padding: 3rem 0 4rem;
+  text-align: center;
+  color: var(--fg-dim);
+  font-size: 0.875rem;
+}
+
+.footer__motto {
+  margin-bottom: 1.25rem;
+}
+
+.footer__motto::before {
+  content: "// ";
+  color: var(--fg-mute);
+}
+
+.footer__links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+}
+
+.footer__links a {
+  color: var(--fg-dim);
+  border-bottom: none;
+}
+
+.footer__links a:hover,
+.footer__links a:focus-visible {
+  color: var(--accent);
+}
+
+.footer__sep {
+  color: var(--fg-mute);
+  user-select: none;
+}

@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Git Momentum — A Git workflow that keeps teams moving</title>
+  <meta name="description" content="Git Momentum is a lightweight yet precise Git workflow. Few rules, low overhead, a repository that stays readable over years — with controlled releases, hotfixes, and auditable history built in." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0d1117" />
+  <link rel="canonical" href="https://www.gitmomentum.com/" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <meta property="og:site_name" content="Git Momentum" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.gitmomentum.com/" />
+  <meta property="og:title" content="Git Momentum — A Git workflow that keeps teams moving" />
+  <meta property="og:description" content="A Git workflow that keeps teams moving. Lightweight yet precise and clean — few rules, low overhead, a repository that stays readable over years." />
+  <meta property="og:image" content="https://www.gitmomentum.com/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Git Momentum — A Git workflow that keeps teams moving" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@salmoukas" />
+  <meta name="twitter:creator" content="@salmoukas" />
+  <meta name="twitter:title" content="Git Momentum — A Git workflow that keeps teams moving" />
+  <meta name="twitter:description" content="A Git workflow that keeps teams moving. Lightweight yet precise and clean." />
+  <meta name="twitter:image" content="https://www.gitmomentum.com/og-image.png" />
+  <meta name="twitter:image:alt" content="Git Momentum — A Git workflow that keeps teams moving" />
+
+  <link rel="preload" href="fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <header class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <span class="nav__title">gitmomentum.com — bash</span>
+      <nav class="nav__links" aria-label="Sections">
+        <a href="#problem">problem</a>
+        <a href="#how">how</a>
+        <a href="#compare">compare</a>
+        <a href="#faq">faq</a>
+        <a href="spec.html">spec</a>
+        <a href="changelog.html">changelog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ───────── Hero ───────── -->
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero__prompt">
+        <span class="path">~/gitmomentum</span>
+        <span>(<span class="branch">main</span>)</span>
+        <span class="sigil">$</span>
+        <span>cat README.md</span>
+      </div>
+
+      <h1 id="hero-title"># Git Momentum</h1>
+      <p class="hero__tagline">A Git workflow that keeps teams moving.</p>
+      <p class="hero__body">
+        Lightweight yet precise and clean. Few rules, low overhead, a repository
+        that stays readable over years — with controlled releases, hotfixes,
+        and auditable history built in.
+      </p>
+
+      <p class="hero__prompt"><span class="sigil">$</span> <span class="cursor" aria-hidden="true"></span></p>
+
+      <div class="cta-row">
+        <a class="cta" href="#how">how-it-works</a>
+        <a class="cta" href="spec.html">read-the-spec</a>
+      </div>
+    </section>
+
+    <!-- ───────── Problem ───────── -->
+    <section id="problem" class="wrap" aria-labelledby="problem-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> git log main --oneline
+        <span class="comment"># the everyday cost</span>
+      </span>
+      <h2 id="problem-title">The everyday cost of most Git workflows</h2>
+      <ul class="log">
+        <li>
+          <span class="sha">a3f9c1d</span>
+          <span class="msg">everyone commits differently — main reads like five diaries</span>
+        </li>
+        <li>
+          <span class="sha">8b22e4f</span>
+          <span class="msg">merge commits in every direction, history unreadable a week later</span>
+        </li>
+        <li>
+          <span class="sha">c1e7a90</span>
+          <span class="msg">long-lived feature branches drift from main until merging is its own project</span>
+        </li>
+        <li>
+          <span class="sha">5d44b2e</span>
+          <span class="msg">a changelog that's always out of date or someone's Friday chore</span>
+        </li>
+        <li>
+          <span class="sha">9e0a37b</span>
+          <span class="msg">"what's on staging right now?" — answered in Slack, sometimes correctly</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ───────── Benefits ───────── -->
+    <section class="wrap" aria-labelledby="benefits-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> git diff workflow
+        <span class="comment"># what you get</span>
+      </span>
+      <h2 id="benefits-title">What you get</h2>
+      <ul class="diff">
+        <li>
+          <span class="head">developer freedom on working branches</span>
+          <span class="body">
+            Commit however you want. The squash on merge turns whatever your
+            branch looked like into one clean commit on main.
+          </span>
+        </li>
+        <li>
+          <span class="head">a history a human can read</span>
+          <span class="body">
+            Near-linear. Every commit reviewed and described.
+            <code>git log main</code> reads like a project diary.
+          </span>
+        </li>
+        <li>
+          <span class="head">always know what's deployed</span>
+          <span class="body">
+            Each deployment branch's tip is what's live. No drift, no dashboard,
+            no doubt.
+          </span>
+        </li>
+        <li>
+          <span class="head">no changelog maintenance</span>
+          <span class="body">
+            The commit log on main <em>is</em> the changelog. Generate it on demand.
+          </span>
+        </li>
+        <li>
+          <span class="head">hotfixes that don't fork the project</span>
+          <span class="body">
+            Straight to production, then back to main. Audit trail intact.
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ───────── How it works ───────── -->
+    <section id="how" class="wrap" aria-labelledby="how-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> git momentum --explain
+      </span>
+      <h2 id="how-title">How it works</h2>
+
+      <figure class="diagram" role="img" aria-label="Diagram of the Git Momentum workflow: a horizontal main branch with an update branch sprouting off and squash-merging back; testing, staging, and production are labels pointing into main's history; a hotfix branches off production, squash-merges into production, and back-merges into main.">
+        <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <!-- update/login branch (above main) -->
+          <text class="d-label-branch" x="265" y="55" text-anchor="middle">update/login</text>
+          <path class="d-line" d="M 195 130 C 215 130, 225 70, 245 70 L 285 70 C 295 70, 305 130, 305 130" />
+          <circle class="d-commit-update" cx="245" cy="70" r="5" />
+          <circle class="d-commit-update" cx="265" cy="70" r="5" />
+          <circle class="d-commit-update" cx="285" cy="70" r="5" />
+
+          <!-- deploy labels (above main) -->
+          <text class="d-label-deploy" x="380" y="95" text-anchor="middle">testing</text>
+          <text class="d-label-deploy" x="480" y="95" text-anchor="middle">staging</text>
+          <text class="d-label-deploy" x="590" y="95" text-anchor="middle">production</text>
+
+          <!-- deploy pointers (dashed, pointing down to main) -->
+          <line class="d-pointer" x1="380" y1="102" x2="380" y2="122" />
+          <line class="d-pointer" x1="480" y1="102" x2="480" y2="122" />
+          <line class="d-pointer" x1="590" y1="102" x2="590" y2="122" />
+
+          <!-- main branch line -->
+          <line class="d-line-main" x1="40" y1="130" x2="740" y2="130" />
+
+          <!-- main branch label -->
+          <text class="d-label-branch" x="35" y="134" text-anchor="end">main</text>
+
+          <!-- main branch commits -->
+          <circle class="d-commit" cx="60"  cy="130" r="5" />
+          <circle class="d-commit" cx="105" cy="130" r="5" />
+          <circle class="d-commit" cx="150" cy="130" r="5" />
+          <circle class="d-commit" cx="195" cy="130" r="5" />
+          <circle class="d-commit" cx="305" cy="130" r="5" />
+          <circle class="d-commit" cx="380" cy="130" r="5" />
+          <circle class="d-commit" cx="480" cy="130" r="5" />
+          <circle class="d-commit" cx="590" cy="130" r="5" />
+          <circle class="d-commit" cx="700" cy="130" r="5" />
+
+          <!-- hotfix/csrf branch (below main) -->
+          <path class="d-line-hotfix" d="M 590 130 C 610 130, 620 200, 640 200 L 680 200" />
+          <circle class="d-commit-hotfix" cx="640" cy="200" r="5" />
+          <circle class="d-commit-hotfix" cx="680" cy="200" r="5" />
+          <text class="d-label-branch" x="640" y="225" text-anchor="start">hotfix/csrf</text>
+
+          <!-- back-merge arc to main -->
+          <path class="d-line-hotfix" d="M 680 200 C 695 200, 700 130, 700 130" />
+        </svg>
+      </figure>
+      <p class="diagram-caption">
+        <code>main</code> stays append-only. <code>update/*</code> branches sprout and squash-merge back.
+        <code>testing</code>, <code>staging</code>, and <code>production</code> are labels into main's history.
+        A <code>hotfix/*</code> squash-merges into <code>production</code> and is back-merged into <code>main</code>.
+      </p>
+
+      <h3 class="subhead">three commitments</h3>
+
+      <div class="how-block">
+        <strong>Main is append-only; deployment branches are labels on it.</strong>
+        Commits on main never change. Each deployment branch is a pointer into
+        main's history — its tip is what's deployed.
+      </div>
+
+      <div class="how-block">
+        <strong>Working branches stay short.</strong>
+        Merge into main as soon as a change is ready to <em>exist</em>, not when
+        it's ready to <em>release</em>. Feature flags handle the gap.
+      </div>
+
+      <div class="how-block">
+        <strong>Versions, deployment state, and changelogs are derived, not stored.</strong>
+        Tags give you versions. Branch pointers give you deployment state.
+        Commit messages give you changelogs.
+      </div>
+
+      <h3 class="subhead">two flows</h3>
+
+      <p class="flow">
+        <strong>Standard change.</strong>
+        <code>branch from main</code> → <code>commit freely</code> →
+        <code>PR</code> → <code>squash-merge</code> → <code>promote</code>.
+      </p>
+
+      <p class="flow">
+        <strong>Hotfix.</strong>
+        <code>branch from production</code> → <code>PR</code> →
+        <code>squash-merge into production</code> → <code>back-merge into main</code>.
+      </p>
+
+      <p class="coda">That's the whole model.</p>
+    </section>
+
+    <!-- ───────── Compare ───────── -->
+    <section id="compare" class="wrap" aria-labelledby="compare-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> git momentum --compare
+      </span>
+      <h2 id="compare-title">How it compares</h2>
+      <div class="compare">
+        <article class="compare__card">
+          <h3>vs. Git Flow</h3>
+          <p>Same precision, fewer branches and rules.</p>
+          <p>No develop branch, no release branches.</p>
+        </article>
+        <article class="compare__card">
+          <h3>vs. GitHub Flow</h3>
+          <p>Same lightness, plus a defined release model.</p>
+          <p>Stages, hotfixes, versions, and changelogs all built in.</p>
+        </article>
+        <article class="compare__card">
+          <h3>vs. Trunk-based</h3>
+          <p>Same trunk-centric philosophy.</p>
+          <p>With explicit staged deployment, hotfixes, and feature flags.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ───────── Decide ───────── -->
+    <section class="wrap" aria-labelledby="decide-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> gitmomentum init --interactive
+      </span>
+      <h2 id="decide-title">What a team needs to decide</h2>
+      <p>
+        Git Momentum expects to be tailored. A team defines:
+      </p>
+      <ul class="checklist">
+        <li>branch names and prefixes</li>
+        <li>commit message convention</li>
+        <li>version tag pattern</li>
+        <li>direct push policy — and for whom</li>
+        <li>PR review policy</li>
+        <li>production approval mechanism</li>
+      </ul>
+      <div class="cta-row">
+        <a class="cta" href="spec.html">read-the-spec</a>
+      </div>
+    </section>
+
+    <!-- ───────── Get started ───────── -->
+    <section class="wrap" aria-labelledby="start-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> gitmomentum init
+      </span>
+      <h2 id="start-title">Get started</h2>
+      <ol class="steps">
+        <li>
+          <div>
+            <div class="cmd">read the spec</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="cmd">set branch protection</div>
+            <ul class="notes">
+              <li>no force-push</li>
+              <li>squash-merge into main and production</li>
+              <li>fast-forward only on deployment branches</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="cmd">pick a commit message convention</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="cmd">pick a version tag pattern</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="cmd">wire deployment pipelines to push events</div>
+            <ul class="notes">
+              <li>with an approval gate on production</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <div class="cta-row">
+        <a class="cta" href="spec.html">read-the-spec</a>
+      </div>
+    </section>
+
+    <!-- ───────── FAQ ───────── -->
+    <section id="faq" class="wrap" aria-labelledby="faq-title">
+      <span class="section-prompt">
+        <span class="sigil">$</span> man gitmomentum
+        <span class="comment"># frequently asked</span>
+      </span>
+      <h2 id="faq-title">FAQ</h2>
+
+      <div class="faq">
+        <details>
+          <summary>How do I deploy to a stage?</summary>
+          <div class="faq__answer">
+            <p>Three commands:</p>
+            <pre class="terminal"><span class="prompt">$</span> git checkout &lt;stage&gt;
+<span class="prompt">$</span> git merge --ff-only &lt;commit-or-main&gt;
+<span class="prompt">$</span> git push</pre>
+            <p>
+              The push triggers the deployment pipeline. <code>--ff-only</code>
+              ensures you can't accidentally push a non-fast-forward. For
+              production, the pipeline pauses for the approval step your team
+              has configured.
+            </p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Should I open a pull request to promote to a deployment branch?</summary>
+          <div class="faq__answer">
+            <p>
+              Only if your Git platform supports fast-forward-only merges in
+              PRs. Most don't — their default "merge" creates a merge commit,
+              which would break the fast-forward rule on deployment branches.
+              Use the Git CLI above instead.
+            </p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Doesn't squash-merging mean I have to rebase first?</summary>
+          <div class="faq__answer">
+            <p>
+              No. Rebasing is never required in Git Momentum — not here, not
+              anywhere. Merge <code>main</code> into your branch whenever you
+              want to stay current; the squash on merge discards your branch's
+              internal history anyway.
+            </p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Is Git Momentum hard to learn?</summary>
+          <div class="faq__answer">
+            <p>
+              No — provided your team understands how Git and Git histories
+              work. That's a baseline they should have anyway. Git Momentum is
+              just a handful of conventions on top.
+            </p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer wrap">
+    <p class="footer__motto">git momentum is an open specification</p>
+    <p class="footer__links">
+      <a href="https://www.linkedin.com/in/salmoukas/" rel="author noopener" target="_blank">Niklas Salmoukas</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="https://github.com/coreprocess/gitmomentum/blob/main/LICENSE" rel="license noopener" target="_blank">MIT</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="https://github.com/coreprocess/gitmomentum" rel="noopener" target="_blank">Source</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="https://www.linkedin.com/in/salmoukas/" rel="noopener" target="_blank">Contact</a>
+    </p>
+  </footer>
+
+</body>
+</html>

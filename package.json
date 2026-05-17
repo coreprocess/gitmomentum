@@ -1,0 +1,25 @@
+{
+  "name": "gitmomentum",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Git Momentum — a Git workflow that keeps teams moving.",
+  "type": "module",
+  "scripts": {
+    "build": "node build/main.js",
+    "start": "pnpm build && serve dist -l 3000"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "png-to-ico": "^3.0.1",
+    "wawoff2": "^2.0.1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
