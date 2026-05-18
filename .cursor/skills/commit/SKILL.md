@@ -1,9 +1,9 @@
 ---
-name: commit-messages
+name: commit
 description: Writes commit messages for the gitmomentum repository following the Git Momentum project convention (`<type>: <subject>` with optional body). Use whenever preparing a commit, squash-merge title, amend, or direct push to `main` or `production` in this repo, or when the user asks for help drafting a commit message.
 ---
 
-# Commit Messages
+# Commit
 
 This project's commit convention is defined in `PROJECT.md`. All squash-merge and direct-push commits to `main` and `production` MUST use the format below. `PROJECT.md` is authoritative; if this skill ever drifts from it, update this skill.
 

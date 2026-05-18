@@ -1,9 +1,9 @@
 ---
-name: version-tagging
+name: version
 description: Cuts a new `v<major>.<minor>.<patch>` tag on the gitmomentum repository, deciding the bump level (major / minor / patch) by analyzing the commits since the last tag. Use when the user asks to release, tag a version, cut a release, bump the version, or when preparing a promotion to `production`.
 ---
 
-# Version Tagging
+# Version
 
 This project's version-tag rules are defined in `PROJECT.md` → "Names" and "Conventions → Version tags". Tags are the source of truth for versions: `git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4` derives the version of any commit, and `dist/changelog.html` is generated from those tags (see `build/changelog.js`).
 

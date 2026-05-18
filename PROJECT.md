@@ -21,7 +21,7 @@ The project uses a single deployment branch, `production`, which represents the 
 
 ### Commit messages
 
-When committing with an AI agent, use the [`commit-messages` skill](.cursor/skills/commit-messages/SKILL.md), which encodes the rules below.
+When committing with an AI agent, use the [commit skill](.cursor/skills/commit/SKILL.md), which encodes the rules below.
 
 Squash-merge and direct-push commits to `main` and `production` MUST follow:
 
@@ -64,7 +64,7 @@ main's history is a valid target.
 
 ### Version tags
 
-When tagging with an AI agent, use the [`version-tagging` skill](.cursor/skills/version-tagging/SKILL.md), which encodes the rules below and the major / minor / patch decision logic.
+When tagging with an AI agent, use the [version skill](.cursor/skills/version/SKILL.md), which encodes the rules below and the major / minor / patch decision logic.
 
 Pattern: `v<major>.<minor>.<patch>` (matched by `v[0-9]*`).
 
