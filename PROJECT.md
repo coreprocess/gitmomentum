@@ -68,7 +68,7 @@ When tagging with an AI agent, use the [version skill](.cursor/skills/version/SK
 
 Pattern: `v<major>.<minor>.<patch>` (matched by `v[0-9]*`).
 
-Tags are created manually by the maintainer on release-worthy commits. The version of any commit is derived with:
+Tags are created manually by the [maintainer](MAINTAINERS.md) on release-worthy commits. The version of any commit is derived with:
 
 ```
 git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4
@@ -82,9 +82,9 @@ git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4
 
 | Item | Policy |
 |------|--------|
-| Direct push to `main` | Allowed for the maintainer. The pushed commit MUST follow the commit message convention. |
-| Direct push to `production` | Allowed for the maintainer, as a hotfix shortcut. The back-merge to `main` remains mandatory. |
-| Promotion authority | The maintainer pushes commits from `main`'s history to `production`. |
+| Direct push to `main` | Allowed for the [maintainer](MAINTAINERS.md). The pushed commit MUST follow the commit message convention. |
+| Direct push to `production` | Allowed for the [maintainer](MAINTAINERS.md), as a hotfix shortcut. The back-merge to `main` remains mandatory. |
+| Promotion authority | The [maintainer](MAINTAINERS.md) pushes commits from `main`'s history to `production`. |
 
 ---
 
@@ -92,8 +92,8 @@ git describe --tags --candidates=100 --match='v[0-9]*' --abbrev=4
 
 | Item | Policy |
 |------|--------|
-| Update PRs | May be self-merged by the maintainer. PRs from external contributors require maintainer review and approval. |
-| Hotfix PRs | May be self-merged by the maintainer. |
+| Update PRs | May be self-merged by the [maintainer](MAINTAINERS.md). PRs from external contributors require [maintainer](MAINTAINERS.md) review and approval. |
+| Hotfix PRs | May be self-merged by the [maintainer](MAINTAINERS.md). |
 
 ---
 
