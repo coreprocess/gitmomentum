@@ -211,17 +211,18 @@
         </svg>
       </figure>
       <p class="diagram-caption">
-        <code>main</code> stays append-only. <code>update/*</code> branches sprout and squash-merge back.
-        <code>testing</code>, <code>staging</code>, and <code>production</code> are labels into main's history.
+        <code>main</code> is a clean, near-linear changelog of shipped changes. <code>update/*</code> branches sprout and squash-merge back as one commit each.
+        <code>testing</code>, <code>staging</code>, and <code>production</code> are pointers into main's history.
         A <code>hotfix/*</code> squash-merges into <code>production</code> and is back-merged into <code>main</code>.
       </p>
 
       <h3 class="subhead">three commitments</h3>
 
       <div class="how-block">
-        <strong>Main is append-only; deployment branches are labels on it.</strong>
-        Commits on main never change. Each deployment branch is a pointer into
-        main's history — its tip is what's deployed.
+        <strong>Main reads like a changelog.</strong>
+        Each update lands as one self-contained commit on main, in order — a clean,
+        near-linear history that's actually readable. Deployment branches are
+        just pointers into that history; each branch's tip is what's deployed.
       </div>
 
       <div class="how-block">
@@ -293,7 +294,7 @@
         <li>version tag pattern</li>
         <li>direct push policy — and for whom</li>
         <li>PR review policy</li>
-        <li>production approval mechanism</li>
+        <li>deployment approval mechanism</li>
       </ul>
       <p>
         Capture these decisions in a document that lives with the repository.
@@ -323,7 +324,7 @@
             <div class="cmd">set branch protection</div>
             <ul class="notes">
               <li>no force-push</li>
-              <li>squash-merge into main and production</li>
+              <li>squash-merge only for pull requests</li>
               <li>fast-forward only on deployment branches</li>
             </ul>
           </div>
@@ -342,7 +343,7 @@
           <div>
             <div class="cmd">wire deployment pipelines to push events</div>
             <ul class="notes">
-              <li>with an approval gate on production</li>
+              <li>with approval gates</li>
             </ul>
           </div>
         </li>
@@ -370,9 +371,9 @@
 <span class="prompt">$</span> git push</pre>
             <p>
               The push triggers the deployment pipeline. <code>--ff-only</code>
-              ensures you can't accidentally push a non-fast-forward. For
-              production, the pipeline pauses for the approval step your team
-              has configured.
+              ensures you can't accidentally push a non-fast-forward. If the
+              stage has an approval gate, the pipeline pauses for approval
+              before deploying.
             </p>
           </div>
         </details>

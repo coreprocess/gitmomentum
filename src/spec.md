@@ -2,13 +2,13 @@
 
 ## 1. Overview
 
-This document specifies a Git-based development workflow for software projects that are continuously deployed to one or more environments (stages). The workflow is designed to produce a clean, mostly linear commit history while supporting parallel development, controlled releases, and urgent fixes.
+This document specifies a Git-based development workflow for software projects that are continuously deployed to one or more environments (stages). The workflow is designed to produce a clean, near-linear, readable commit history while supporting parallel development, controlled releases, and urgent fixes.
 
 ### 1.1 Design Principles
 
 The workflow rests on three principles:
 
-1. **The trunk is append-only.** Once a commit reaches the trunk branch (`main`), its content and position in history are never rewritten.
+1. **The trunk is a clean, readable changelog.** Each landed change is one commit on `main`, added on top of the previous one — a near-linear history (the sole exception is the hotfix back-merge, see §5.2). Commits on `main` are never rebased, amended, reordered, or removed.
 2. **Merging is decoupled from releasing.** Code is merged into trunk as soon as it is ready to *exist*; it is released to a stage as a separate, explicit step.
 3. **The repository state is the source of truth.** Versions, deployment status, and changelogs are derived from the Git history itself, not stored as files inside it.
 
@@ -45,12 +45,12 @@ The workflow defines exactly four kinds of branches.
 - **Lifetime:** Permanent.
 - **Purpose:** Represents the latest integrated state of the codebase. All work converges here.
 - **Rules:**
-  - History on `main` is append-only. No commit on `main` may ever be rewritten, removed, or reordered.
-  - The only ways a commit can appear on `main` are:
-    - a squash-merge from an `update/*` branch (see §5.1);
-    - a merge commit from a deployment branch following a hotfix (see §5.2);
-    - a direct push that serves as a shortcut for a squash-merge from an `update/*` branch, if project policy permits direct pushes (see §13). The pushed commit MUST conform to the PR commit convention (§6.1).
-  - Any push to `main` that does not match one of the three forms above is prohibited.
+  - History on `main` is stable: no commit on `main` may ever be rewritten, removed, or reordered.
+  - A commit may appear on `main` only via one of three operations:
+    - a squash-merge of an `update/*` PR (§5.1);
+    - a hotfix back-merge from `production` (§5.2);
+    - a direct push shortcut, where project policy permits, conforming to the PR commit convention (§5.1, §6.1, §13).
+  - Any other push to `main` is prohibited.
 
 ### 3.2 Deployment Branches
 
@@ -59,9 +59,10 @@ The workflow defines exactly four kinds of branches.
 - **Purpose:** Each deployment branch documents what is currently deployed (or queued for deployment) to its corresponding stage. The branch pointer *is* the record of "what is live where."
 - **Content:** A deployment branch contains nothing beyond what is on `main`. It carries no environment-specific configuration, no version files, and no stage-only commits.
 - **Rules:**
-  - A deployment branch is updated by fast-forwarding it to a commit taken from `main`'s history. The target commit need not be the current tip of `main`; any commit reachable from `main` may be chosen.
-  - The single exception is `production`, which additionally accepts hotfix commits — either as a squash-merged hotfix PR (§5.2) or, if project policy permits, as a direct push that serves as a shortcut for the same (see §13). After such a hotfix, `production` temporarily contains a commit not yet on `main`; this is resolved by the mandatory back-merge described in §5.2.
-  - Promotion across stages is not transitive at the branch level: each deployment branch is updated directly from `main`, not from another deployment branch. Whether the *content* on a higher stage must first have been on a lower stage is a process question, not a branching one.
+  - A deployment branch advances by fast-forward to any commit on `main`'s history (the tip or any earlier commit).
+  - **Exception — `production`:** it additionally accepts hotfix commits, either via a squash-merged hotfix PR or, if project policy permits, via a direct push shortcut (§5.2, §13).
+  - After a hotfix, `production` briefly holds a commit not yet on `main`. The mandatory back-merge (§5.2 step 6) restores the invariant.
+  - Promotion across stages is not transitive: each deployment branch is updated directly from `main`, not from another deployment branch. Whether content must first reach a lower stage is a process question, not a branching one.
 
 ### 3.3 Update Branches
 
@@ -91,7 +92,7 @@ The workflow defines exactly four kinds of branches.
 
 These properties hold at all times and are enforced by the rules in the rest of this specification.
 
-1. **`main` is append-only.** No commit reachable from `main` is ever rewritten, dropped, or reordered.
+1. **`main`'s history is stable.** No commit reachable from `main` is ever rewritten, dropped, or reordered.
 2. **Deployment branches are ancestors of `main`**, except transiently on `production` between a hotfix landing and its back-merge.
 3. **Deployment branches advance only by fast-forward to a commit on `main`'s history**, except `production`, which additionally accepts hotfix commits (via PR squash-merge or, if permitted, a direct push shortcut).
 4. **Every commit on `main` is one of: a squash-merge commit from an `update/*` PR, a merge commit from a hotfix back-merge, or a direct push shortcut that conforms to the PR commit convention.**
@@ -114,7 +115,7 @@ The flow for any non-urgent change — features, refactors, regular bug fixes, d
 6. The update branch is deleted.
 7. The new commit on `main` may now be promoted to deployment branches (see §5.3).
 
-**Direct push shortcut.** If project policy permits (see §13), an authorized contributor MAY push a single commit directly to `main` in place of steps 1–6, provided the commit satisfies the same content and message requirements as a squash-merged PR commit. The shortcut is intended for trivial changes (typos, comment fixes, minor doc edits) where the overhead of a PR is disproportionate; project policy defines who may use it and for what kinds of changes.
+**Direct push shortcut.** If project policy permits (see §13), an authorized contributor MAY push a single commit directly to `main` in place of steps 1–6. The commit MUST follow the PR commit convention (§6.1). The shortcut is intended for trivial changes (typos, comment fixes, minor doc edits); project policy defines who may use it and for what.
 
 ### 5.2 Hotfix Flow
 
@@ -124,15 +125,15 @@ The flow for an urgent fix that must reach production immediately.
 2. Develop on the branch.
 3. Open a pull request targeting `production`. The build and test pipeline, if configured, runs.
 4. After review, the PR is merged into `production` using **squash merge**.
-5. The deployment pipeline for production runs automatically (see §7.2), subject to any configured approval mechanism.
+5. The deployment pipeline for production runs automatically (see §7.2), subject to the deployment approval mechanism, if any.
 6. **Immediately after the merge**, the resulting commit on `production` MUST be merged back into `main` using a regular merge commit (i.e., not squash, not rebase).
    - This produces a two-parent merge commit on `main` whose parents are (a) the previous tip of `main` and (b) the hotfix commit on `production`.
-   - This merge commit is the mechanism that keeps `main` append-only while still incorporating the hotfix: the hotfix commit on `production` is preserved unchanged, and `main` is extended (not rewritten) to include it.
+   - This merge commit is the mechanism that keeps `main`'s history stable while still incorporating the hotfix: the hotfix commit on `production` is preserved unchanged, and `main` is extended (not rewritten) to include it.
 7. The hotfix branch is deleted.
 
-**Direct push shortcut.** If project policy permits (see §13), an authorized contributor MAY push a single commit directly to `production` in place of steps 1–4, provided the commit satisfies the same content and message requirements as a squash-merged hotfix PR commit. The mandatory back-merge to `main` (step 6) still applies: it is required regardless of whether the hotfix arrived via PR or via direct push, because it is what preserves the append-only invariant on `main`.
+**Direct push shortcut.** If project policy permits (see §13), an authorized contributor MAY push a single commit directly to `production` in place of steps 1–4. The commit MUST follow the PR commit convention (§6.1). The back-merge to `main` (step 6) still applies — it is what keeps `main`'s history stable, regardless of how the hotfix arrived.
 
-**Rationale for the merge commit.** Squashing or rebasing the hotfix into `main` would create a new commit with the same content but a different identity, leaving the original hotfix commit (already deployed on `production`) unreachable from `main`. The merge commit is the only operation that incorporates the hotfix into `main` without violating the append-only invariant.
+**Rationale for the merge commit.** The hotfix commit on `production` has already been deployed; its identity must be preserved on `main`. Squashing or rebasing would replace it with a new commit of the same content but a different hash, leaving the deployed commit unreachable from `main`. A regular merge commit incorporates the hotfix while leaving both histories untouched.
 
 ### 5.3 Promotion to a Stage
 
@@ -140,7 +141,7 @@ Code is promoted to a stage by advancing the corresponding deployment branch to 
 
 1. Identify the commit to promote. It may be the current tip of `main` or any earlier commit on `main`'s history.
 2. Push that commit to the deployment branch as a fast-forward. The push is performed by a developer or operator with the appropriate permission, or by an automated system, depending on project preference.
-3. The deployment pipeline for that stage runs automatically (see §7.2), subject to any configured approval mechanism.
+3. The deployment pipeline for that stage runs automatically (see §7.2), subject to the deployment approval mechanism, if any.
 
 Notes:
 - Promotion is always from `main` to the deployment branch, never from one deployment branch to another.
@@ -179,8 +180,7 @@ The exact format is project-specific but MUST be fixed and documented within the
 
 ### 6.2 Merge Strategy
 
-- PRs targeting `main` (from update branches): **squash merge only**.
-- PRs targeting `production` (from hotfix branches): **squash merge only**.
+- Pull requests (targeting `main` from `update/*`, or `production` from `hotfix/*`): **squash merge only**.
 - Hotfix back-merges from `production` into `main`: **regular merge commit only** (see §5.2).
 - No other merge operations into `main` or deployment branches are permitted.
 
@@ -206,15 +206,15 @@ Its purpose is to verify that the code builds and that the test suite passes. It
 
 A deployment pipeline runs automatically on every push to a deployment branch and deploys the new tip of that branch to the corresponding stage.
 
-Because deployment branches only advance by fast-forward (or, on `production`, by hotfix squash-merge or direct push shortcut), every deployment corresponds to a single, identifiable commit on `main` (or on the hotfix path).
+Each deployment is tied to a single, identifiable commit: a commit on `main` (for fast-forward advancement) or a hotfix commit on `production` (added by squash-merge or direct push shortcut).
 
-**Approval for production deployments.** The deployment pipeline for `production` SHOULD include an explicit approval mechanism so that no push to `production` triggers an unattended live deployment. Suitable mechanisms include:
+**Deployment approval mechanism.** A deployment pipeline MAY include an explicit approval mechanism so that no push to a deployment branch triggers an unattended deployment. Suitable mechanisms include:
 
 - A platform-level approval gate (e.g., GitHub Environment protection rules requiring approval from a designated group before the deployment job runs).
 - A two-step pipeline that first produces a plan or diff (e.g., `terraform plan`, a Kubernetes diff, a database migration preview) and pauses for manual approval before applying it.
 - Any equivalent mechanism that interposes a human or out-of-band check between push and apply.
 
-The deployment pipelines for non-production stages MAY use such mechanisms but are typically run unattended.
+A deployment approval mechanism SHOULD be configured for `production`. For non-production stages it is OPTIONAL; such pipelines are typically run unattended.
 
 ---
 
@@ -367,7 +367,7 @@ To adopt this workflow, a project MUST define the following. Where a default is 
 |------|----------------|-------|
 | **Build and test pipeline** | Whether the pipeline is configured, what it runs, and which events trigger it. | See §7.1. The pipeline is OPTIONAL. |
 | **Deployment pipelines** | One per stage; what each deploys and how. | See §7.2. |
-| **Production approval mechanism** | The specific mechanism that gates production deployment (e.g., GitHub Environment approvals, plan-and-apply with manual approval, equivalent). | See §7.2. SHOULD NOT be omitted for production. |
+| **Deployment approval mechanism** | The specific mechanism that gates a deployment (e.g., GitHub Environment approvals, plan-and-apply with manual approval, equivalent). | See §7.2. SHOULD be configured for `production`; OPTIONAL for other stages. |
 
 ### 13.6 Feature Flags
 

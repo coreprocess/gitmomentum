@@ -116,7 +116,7 @@ gitmomentum/
 
 ### Deployment pipeline
 
-Pushes to `production` trigger a Vercel deployment to gitmomentum.com. Production deployments do not require approval.
+Pushes to `production` trigger a Vercel deployment to gitmomentum.com. No deployment approval mechanism is configured; pushes to `production` deploy immediately.
 
 The Vercel project must have `VERCEL_DEEP_CLONE=true` set; otherwise Vercel's shallow clone hides older tags and the changelog's version column renders every commit as `untagged`.
 
